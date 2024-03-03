@@ -1,0 +1,196 @@
+<%- await include('parts/header.ejs', locals) %>
+
+<style>
+    .card-accent-info {
+      border-top: 2px solid #00bf8f !important;
+    }
+  </style>
+  
+  <div class="text-center mb-4">
+    <h2>Cash</h2>
+  </div>
+  
+  <div class="row justify-content-center">
+    <div class="col-md-7 mw-col6">
+      <div class="card card-accent-info">
+        <div class="card-header float-left">
+          <span class="h5">Discord ID :</span>
+          <input
+            class="form-control mt-3"
+            type="text"
+            name="discordID"
+            id="discord-id"
+            placeholder="Enter Discord ID . . ."
+          />
+          <div class="mt-3">
+            <button
+              class="btn btn-primary"
+              type="submit"
+              onclick="checkUser()"
+              id="check-button"
+            >
+              Check
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div id="addCashContainer" style="display: none"  class="col-md-7 mw-col6">
+      <div class="card card-accent-info">
+       <div class="card-header text-center">
+                <span class="h3">Cash For</span>
+                <button
+                  id="close-button"
+                  type="button"
+                  class="close"
+                  aria-label="Close"
+                >
+                  <span>×</span>
+                </button>
+            </div>  
+            <div class="card-header" style="border: 0px;">
+        <div class="d-flex justify-content-end">
+         <!-- <div class="h5" id="player-name">Player Name</div>-->
+          <div class="h5"><span id="point">100,000</span> CC</div>
+        </div>
+          <input
+            class="form-control mt-3"
+            type="text"
+            name="amount-cash"
+            id="amount-cash"
+            placeholder="Enter Cash . . ."
+          />
+          <div class="mt-3 d-flex justify-content-end">
+            <button
+              class="btn btn-primary"
+              type="submit"
+              onclick="addCash()"
+              id="check-button"
+            >
+              Add Cash
+            </button>
+          </div>
+        </div>
+      </div>
+   
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+  
+   let data = {
+    identifier: "",
+    discord_id: "",
+    cashPoint: 0
+   };
+
+
+
+
+
+  document
+    .getElementById("close-button")
+    .addEventListener("click", function () {
+      document.getElementById("addCashContainer").style.display = "none";
+    });
+
+
+
+  async function checkUser() {
+    let discordIdInput = document.getElementById("discord-id").value;
+    let playerName = document.getElementById("player-name");
+    let point = document.getElementById("point")
+    // const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    // const apiUrl = `https://mongkol.dev/api/identifier/discord/id/${discordIdInput}`;
+    const apiUrl = `https://mongkol.dev/api/identifier/discord/id/${discordIdInput}`;
+    const headers = {
+      // 'Host': 'https://mongkol.dev',
+      // 'Origin': 'https://tx.mongkol.dev',
+      "Access-Control-Allow-Origin": "https://tx.mongkol.dev",
+      // 'Access-Control-Request-Method' : 'GET',
+      // 'Access-Control-Request-Headers': 'Authorization',
+      // 'Referer': 'https://tx.mongkol.dev',
+      Authorization: "Basic dGhlY2lyY2xlZGV2OlRoZWNpcmNsZTExMiFAIw==",
+    };
+
+    axios
+      .get(apiUrl, {
+        headers: headers,
+        // withCredentials: true
+      })
+      .then(async function (response) {
+        // let data = response.data;
+        if (response.status === 200) {
+      //    console.log(response.data);
+          document.getElementById("addCashContainer").style.display = "block";
+      //    playerName.innerHTML = response.data.first_name + " " + response.data.last_name;
+          point.innerHTML = response.data.point;
+          data.identifier = response.data.identifier;
+          data.discord_id = discordIdInput;
+        }
+        else{
+          document.getElementById("addCashContainer").style.display = "none";
+        }
+      });
+  }
+
+  async function addCash() {
+    let discordIdInput = document.getElementById("discord-id").value;
+    let amountCash = document.getElementById("amount-cash").value;
+    data.cashPoint = parseInt(amountCash);
+
+
+    console.log(data);
+
+    const apiUrl = `https://mongkol.dev/api/identifier/cash`;
+    console.log(apiUrl);
+
+    const headers = {
+      "Access-Control-Allow-Origin": "https://tx.mongkol.dev",
+      Authorization: "Basic dGhlY2lyY2xlZGV2OlRoZWNpcmNsZTExMiFAIw==",
+    };
+
+    // Show a confirmation modal using SweetAlert2 before making the API call
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to add Cash",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00bf8f",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Confirm",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await axios.put(apiUrl, data, {
+            headers: headers,
+          });
+          Swal.fire(
+            "Add Data!",
+            "The information has been successfully added.",
+            "success",
+            false,
+            "#00bf8f"
+          ).then(() => {
+            location.reload();
+          });
+
+          console.log("API response:", response.data);
+        } catch (error) {
+          Swal.fire(
+            "Error!",
+            "An error occurred while adding the information.",
+            "error"
+          );
+          console.error("API error:", error);
+        }
+      }
+    });
+  }
+</script>
+  <%- await include('parts/footer.ejs', locals) %>

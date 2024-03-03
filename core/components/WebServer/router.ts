@@ -48,6 +48,10 @@ export default (config: WebServerConfigType) => {
     router.get('/legacy/players', webAuthMw, webRoutes.player_page);
     router.get('/legacy/resources', webAuthMw, webRoutes.resources);
     router.get('/legacy/serverLog', webAuthMw, webRoutes.serverLog);
+    router.get('/legacy/playerLog', webAuthMw, webRoutes.playerLog);
+    router.get('/legacy/playerLog', webAuthMw, webRoutes.playerLog);
+    router.get('/legacy/vip', webAuthMw, webRoutes.vip);
+    router.get('/legacy/cash', webAuthMw, webRoutes.cash);
     router.get('/legacy/settings', webAuthMw, webRoutes.settings_page);
     router.get('/legacy/systemLog', webAuthMw, webRoutes.systemLog);
     router.get('/legacy/whitelist', webAuthMw, webRoutes.whitelist_page);

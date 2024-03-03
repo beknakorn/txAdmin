@@ -1,0 +1,727 @@
+<%- await include('parts/header.ejs', locals) %>
+<style>
+  .card-accent-info {
+    border-top: 2px solid #00bf8f !important;
+  }
+</style>
+
+<div class="text-center mb-4">
+  <h2>VIP</h2>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-md-7 mw-col6">
+    <div class="card card-accent-info">
+      <div class="card-header float-left">
+        <span class="h5">Discord ID :</span>
+        <input
+          class="form-control mt-3"
+          type="text"
+          name="discordID"
+          id="discord-id"
+          placeholder="Enter Discord ID . . ."
+        />
+        <div class="mt-3">
+          <button
+            class="btn btn-primary"
+            type="submit"
+            onclick="checkUser()"
+            id="check-button"
+          >
+            Check
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row justify-content-center">
+  <div id="vipPay" style="display: none">
+    <div class="">
+      <div class="card card-accent-info">
+        <div class="card-header float-left">
+          <span class="h5">Player Name</span>
+          <button
+            id="close-button"
+            type="button"
+            class="close"
+            aria-label="Close"
+          >
+            <span>×</span>
+          </button>
+        </div>
+        <div class="card-header float-left">
+          <div class="h5">VIP Point</div>
+          <div class="row">
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                id="vip-0"
+                data-value="0"
+                priority="Citizen"
+              >
+                0
+              </button>
+            </div>
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                id="vip-500"
+                data-value="500"
+                priority="Basic"
+              >
+                500
+              </button>
+            </div>
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                id="vip-1000"
+                data-value="1000"
+                priority="Standard"
+              >
+                1,000
+              </button>
+            </div>
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                id="vip-1500"
+                data-value="1500"
+                priority="Premium"
+              >
+                1,500
+              </button>
+            </div>
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                id="vip-2000"
+                data-value="2000"
+                priority="Ultimate"
+              >
+                2,000
+              </button>
+            </div>
+          </div>
+          <div class="h5 mt-3">Extra Point</div>
+          <div class="row">
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                id="extra-0"
+                data-value="0"
+              >
+                0
+              </button>
+            </div>
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                id="extra-100"
+                data-value="100"
+              >
+                100
+              </button>
+            </div>
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                id="extra-200"
+                data-value="200"
+              >
+                200
+              </button>
+            </div>
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                id="extra-300"
+                data-value="300"
+              >
+                300
+              </button>
+            </div>
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                id="extra-500"
+                data-value="500"
+              >
+                500
+              </button>
+            </div>
+          </div>
+          <div class="h5 mt-3">Permanant Point</div>
+          <div class="row">
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                id="per-0"
+                data-value="0"
+              >
+                0
+              </button>
+            </div>
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                id="per-500"
+                data-value="500"
+              >
+                500
+              </button>
+            </div>
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                id="per-1000"
+                data-value="1000"
+              >
+                1,000
+              </button>
+            </div>
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                id="per-1500"
+                data-value="1500"
+              >
+                1,500
+              </button>
+            </div>
+            <div class="col">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-block"
+                id="per-2000"
+                data-value="2000"
+              >
+                2,000
+              </button>
+            </div>
+          </div>
+          <div class="h6 mt-3" id="expire-date">Expire date : 01/01/2001</div>
+          <div class="h6 mt-3" id="vipPoint">Vip Point :</div>
+          <div class="h6 mt-3" id="extraPoint">Extra Point :</div>
+          <div class="h6 mt-3" id="permanent-point">Permanant Point :</div>
+          <div class="h6 mt-3" id="total-point">Total Point :</div>
+          <div id="plus-container">
+            <div class="d-flex align-items-center">
+              <select class="form-control" id="dataSelect">
+                <option selected>Select</option>
+              </select>
+              <input
+                class="form-control text-center"
+                type="number"
+                placeholder="Quantity"
+                id="quantity"
+              />
+              <input
+                class="form-control text-center"
+                type="number"
+                placeholder="Exp Date"
+                id="exp-date"
+              />
+              <button
+                class="btn btn-primary fs-6"
+                type="button"
+                onclick="plusItems()"
+              >
+                +
+              </button>
+            </div>
+            <div id="table-container"></div>
+          </div>
+        </div>
+        <div class="card-header d-flex justify-content-end">
+          <button class="btn btn-primary" type="button" onclick="applyData()">
+            APPLY
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  let data = {
+    vip_point: 0,
+    extra_point: 0,
+    permanent_point: 0,
+    priority: "",
+    identifier: "",
+    expire_items: [],
+    discord_id: "",
+  };
+
+  let datalabel = [];
+
+  const vipButtons = document.querySelectorAll('[id^="vip-"]');
+  vipButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      const dataValue = button.getAttribute("data-value");
+      const priority = button.getAttribute("priority");
+      if (
+        dataValue !== null &&
+        dataValue !== "" &&
+        priority !== null &&
+        priority !== ""
+      ) {
+        vipButtons.forEach(function (otherButton) {
+          if (otherButton !== button) {
+            otherButton.classList.add("btn-outline-primary");
+            otherButton.classList.remove("btn-primary");
+          }
+        });
+        button.classList.remove("btn", "btn-outline-primary");
+        button.classList.add("btn", "btn-primary");
+        data.vip_point = parseInt(dataValue);
+        data.priority = priority;
+        console.log("ค่า data:", data);
+      } else {
+        console.log("ไม่มีข้อมูลใน data-value");
+      }
+    });
+  });
+
+  const extraButtons = document.querySelectorAll('[id^="extra-"]');
+  extraButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      const dataValue = button.getAttribute("data-value");
+      if (dataValue !== null && dataValue !== "") {
+        extraButtons.forEach(function (otherButton) {
+          if (otherButton !== button) {
+            otherButton.classList.add("btn-outline-primary");
+            otherButton.classList.remove("btn-primary");
+          }
+        });
+        button.classList.remove("btn-outline-primary");
+        button.classList.add("btn-primary");
+        data.extra_point = parseInt(dataValue);
+        console.log("ค่า data:", data);
+      } else {
+        console.log("ไม่มีข้อมูลใน data-value");
+      }
+    });
+  });
+
+  const permanentButtons = document.querySelectorAll('[id^="per-"]');
+  permanentButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      const dataValue = button.getAttribute("data-value");
+      if (dataValue !== null && dataValue !== "") {
+        permanentButtons.forEach(function (otherButton) {
+          if (otherButton !== button) {
+            otherButton.classList.add("btn-outline-primary");
+            otherButton.classList.remove("btn-primary");
+          }
+        });
+        button.classList.remove("btn-outline-primary");
+        button.classList.add("btn-primary");
+        data.permanent_point = parseInt(dataValue);
+        console.log("ค่า data:", data);
+      } else {
+        console.log("ไม่มีข้อมูลใน data-value");
+      }
+    });
+  });
+
+  function checkAlreadyVIP(point) {
+    const vipID = document.getElementById(`vip-${point}`);
+    const otherButtons = document.querySelectorAll('[id^="vip-"]');
+
+    if (vipID) {
+      otherButtons.forEach(function (button) {
+        if (button !== vipID) {
+          button.classList.add("btn-outline-primary");
+          button.classList.remove("btn-primary");
+        }
+      });
+      vipID.classList.remove("btn-outline-primary");
+      vipID.classList.add("btn-primary");
+      return;
+    }
+    return;
+  }
+
+  function checkAlreadyExtra(point) {
+    const extraID = document.getElementById(`extra-${point}`);
+    const otherButtons = document.querySelectorAll('[id^="extra-"]');
+
+    if (extraID) {
+      otherButtons.forEach(function (button) {
+        if (button !== extraID) {
+          button.classList.add("btn-outline-primary");
+          button.classList.remove("btn-primary");
+        }
+      });
+      extraID.classList.remove("btn-outline-primary");
+      extraID.classList.add("btn-primary");
+      return;
+    }
+    return;
+  }
+
+  function checkAlreadyPermanent(point) {
+    const perID = document.getElementById(`per-${point}`);
+    const otherButtons = document.querySelectorAll('[id^="per-"]');
+
+    if (perID) {
+      otherButtons.forEach(function (button) {
+        if (button !== perID) {
+          button.classList.add("btn-outline-primary");
+          button.classList.remove("btn-primary");
+        }
+      });
+      perID.classList.remove("btn-outline-primary");
+      perID.classList.add("btn-primary");
+      return;
+    }
+    return;
+  }
+
+  document
+    .getElementById("close-button")
+    .addEventListener("click", function () {
+      document.getElementById("vipPay").style.display = "none";
+    });
+
+ 
+
+  async function checkUser() {
+    let discordIdInput = document.getElementById("discord-id").value;
+    data.discord_id = discordIdInput;
+    // const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    const apiUrl = `https://mongkol.dev/api/identifier/discord/id/${discordIdInput}`;
+    const headers = {
+      // 'Host': 'https://mongkol.dev',
+      // 'Origin': 'https://tx.mongkol.dev',
+      "Access-Control-Allow-Origin": "https://tx.mongkol.dev",
+      // 'Access-Control-Request-Method' : 'GET',
+      // 'Access-Control-Request-Headers': 'Authorization',
+      // 'Referer': 'https://tx.mongkol.dev',
+      Authorization: "Basic dGhlY2lyY2xlZGV2OlRoZWNpcmNsZTExMiFAIw==",
+    };
+
+    axios
+      .get(apiUrl, {
+        headers: headers,
+        // withCredentials: true
+      })
+      .then(async function (response) {
+        // let data = response.data;
+        if (response.status === 200) {
+          document.getElementById("vipPay").style.display = "block";
+          await selectItem();
+          checkAlreadyVIP(response.data.vip_point);
+          checkAlreadyExtra(response.data.extra_point);
+          checkAlreadyPermanent(response.data.permanent_point);
+
+          data.vip_point = response.data.vip_point;
+          data.extra_point = response.data.extra_point;
+          data.permanent_point = response.data.permanent_point;
+          data.priority = response.data.priority;
+
+          data.identifier = response.data.identifier;
+          console.log(data);
+
+          const expire_date = document.getElementById("expire-date");
+          expire_date.textContent =
+            "Expire Date : " + response.data.expire_date;
+
+          const vipPoint = document.getElementById("vipPoint");
+          vipPoint.textContent = "Vip Point : " + response.data.vip_point;
+
+          const extraPoint = document.getElementById("extraPoint");
+          extraPoint.textContent = "Extra Point : " + response.data.extra_point;
+
+          const permanentPoint = document.getElementById("permanent-point");
+          permanentPoint.textContent =
+            "Permanent Point : " + response.data.permanent_point;
+
+          console.log(data);
+        }
+      });
+  }
+
+  async function applyData() {
+    let discordIdInput = document.getElementById("discord-id").value;
+    console.log(discordIdInput);
+    console.log(data);
+
+    const apiUrl = `https://mongkol.dev/api/identifier/discord/id/${discordIdInput}`;
+    console.log(apiUrl);
+
+    const headers = {
+      "Access-Control-Allow-Origin": "https://tx.mongkol.dev",
+      Authorization: "Basic dGhlY2lyY2xlZGV2OlRoZWNpcmNsZTExMiFAIw==",
+    };
+
+    // Show a confirmation modal using SweetAlert2 before making the API call
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to add information?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00bf8f",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Confirm",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const response = await axios.put(apiUrl, data, {
+            headers: headers,
+          });
+          Swal.fire(
+            "Add Data!",
+            "The information has been successfully added.",
+            "success",
+            false,
+            "#00bf8f"
+          ).then(() => {
+            location.reload();
+          });
+
+          console.log("API response:", response.data);
+        } catch (error) {
+          Swal.fire(
+            "Error!",
+            "An error occurred while adding the information.",
+            "error"
+          );
+          console.error("API error:", error);
+        }
+      }
+    });
+  }
+
+  function selectItem() {
+    // const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    const apiItem = "https://mongkol.dev/api/items/vip";
+
+    const headers = {
+      // 'Host': 'https://mongkol.dev',
+      // 'Origin': 'https://tx.mongkol.dev',
+      "Access-Control-Allow-Origin": "https://tx.mongkol.dev",
+      // 'Access-Control-Request-Method' : 'GET',
+      // 'Access-Control-Request-Headers': 'Authorization',
+      // 'Referer': 'https://tx.mongkol.dev',
+      Authorization: "Basic dGhlY2lyY2xlZGV2OlRoZWNpcmNsZTExMiFAIw==",
+    };
+
+    axios
+      .get(apiItem, {
+        headers: headers,
+      })
+      .then(function (response) {
+        const data = response.data;
+        const select = document.getElementById("dataSelect");
+
+        data.forEach(function (item) {
+          const option = document.createElement("option");
+          option.value = item.item_name;
+          option.setAttribute("name", item.item_label);
+          option.textContent = item.item_label;
+          select.appendChild(option);
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  function plusItems() {
+    const selectItem = document.getElementById("dataSelect");
+    const quantity = document.getElementById("quantity");
+    const expDate = document.getElementById("exp-date");
+
+    const selectedOption = selectItem.options[selectItem.selectedIndex];
+    const optionName = selectedOption.getAttribute("name");
+
+    const item = {
+      item_name: selectItem.value,
+      quantity: parseInt(quantity.value),
+      expire_date: parseInt(expDate.value),
+    };
+
+    const itemlabel = {
+      item_label: optionName,
+    };
+
+    if (
+      item.item_name !== "" &&
+      item.item_name !== selectItem.value[0] &&
+      item.quantity !== "" &&
+      item.expire_date !== ""
+    ) {
+      data.expire_items.push(item);
+      datalabel.push(itemlabel);
+      console.log(datalabel);
+    }
+
+    selectItem.selectedIndex = 0;
+    quantity.value = "";
+    expDate.value = "";
+
+    const tableContainer = document.getElementById("table-container");
+    tableContainer.innerHTML = "";
+
+    function renderTable() {
+      const table = document.createElement("table");
+      table.classList.add("table", "table-hover", "mt-2");
+      const tableHeader = document.createElement("tr");
+      const th1 = document.createElement("th");
+      const th2 = document.createElement("th");
+      const th3 = document.createElement("th");
+      const th4 = document.createElement("th");
+      th1.textContent = "Item Name";
+      th2.textContent = "Item label";
+      th3.textContent = "Quantity";
+      th4.textContent = "Expire Date";
+      tableHeader.appendChild(th1);
+      tableHeader.appendChild(th2);
+      tableHeader.appendChild(th3);
+      tableHeader.appendChild(th4);
+      table.appendChild(tableHeader);
+
+      tableContainer.innerHTML = "";
+
+      if (data.expire_items.length === 0) {
+        tableContainer.style.display = "none";
+        return;
+      } else {
+        tableContainer.style.display = "block";
+      }
+
+      tableContainer.appendChild(table);
+
+      for (
+        let index = 0;
+        index < data.expire_items.length || index < datalabel.length;
+        index++
+      ) {
+        const item = data.expire_items[index];
+        const itemlabels = datalabel[index];
+
+        if (
+          item.item_name !== "" ||
+          item.quantity !== "" ||
+          item.expire_date !== "" ||
+          itemlabels.item_label != ""
+        ) {
+          const row = document.createElement("tr");
+          row.id = `row-${index}`;
+
+          const td1 = document.createElement("td");
+          const td2 = document.createElement("td");
+          const td3 = document.createElement("td");
+          const td4 = document.createElement("td");
+          td1.textContent = item.item_name;
+          td2.textContent = itemlabels.item_label;
+          td3.textContent = item.quantity;
+          td4.textContent = item.expire_date;
+          row.appendChild(td1);
+          row.appendChild(td2);
+          row.appendChild(td3);
+          row.appendChild(td4);
+
+          const deleteButton = document.createElement("button");
+          deleteButton.classList.add("btn", "btn-outline-danger");
+          deleteButton.textContent = "Delete";
+          deleteButton.addEventListener("click", function () {
+            const rowToDelete = document.getElementById(`row-${index}`);
+            rowToDelete.remove();
+            data.expire_items.splice(index, 1);
+            datalabel.splice(index, 1);
+            console.log(data);
+            console.log(datalabel);
+            renderTable();
+
+            if (data.expire_items.length === 0) {
+              tableContainer.style.display = "none";
+              console.log("ไม่มีแล้วจ้า");
+            }
+          });
+
+          const td5 = document.createElement("td");
+          td5.appendChild(deleteButton);
+          row.appendChild(td5);
+
+          table.appendChild(row);
+        }
+      }
+    }
+
+    renderTable();
+  }
+
+  // function plusItems() {
+  // const selectItem = document.getElementById("dataSelect");
+  // const quantity = document.getElementById("quantity");
+  // const expDate = document.getElementById("exp-date");
+
+  // const item = {
+  //     item_name: selectItem.value,
+  //     quantity: quantity.value,
+  //     expire_date: expDate.value
+  //   };
+
+  //   data.expire_item.push(item);
+
+  //   data.expire_item.forEach((item, index) => {
+  //   if (item.item_name !== "" || item.quantity !== 0 || item.expire_date !== 0) {
+  //     const itemName = item.item_name;
+  //     const quantity = item.quantity;
+  //     const expireDate = item.expire_date;
+
+  //     console.log(`Item at position ${index + 1}:`);
+  //     console.log("Item Name:", itemName);
+  //     console.log("Quantity:", quantity);
+  //     console.log("Expire Date:", expireDate);
+  //   }
+  // });
+
+  //   selectItem.selectedIndex = 0;
+  //   quantity.value = "";
+  //   expDate.value = "";
+  //   // const plusContainer = document.getElementById("plus-container");
+  //   // const newselectItem = `
+  //   //   <div class="d-flex align-items-center">
+  //   //     <select class="form-control" id="dataSelect-${count}">
+  //   //       <option selected>Select</option>
+  //   //     </select>
+  //   //     <input class="form-control text-center" type="number" placeholder="quantity">
+  //   //     <input class="form-control text-center" type="number" placeholder="Day">
+  //   //     <button class="btn btn-primary fs-6" type="button">+</button>
+  //   //   </div>
+  //   // `;
+  //   // selectItem(count);
+  //   // plusContainer.insertAdjacentHTML('beforeend', newselectItem);
+  // }
+
+  // document.getElementById("dataSelect").addEventListener("change", handleSelectChange);
+
+  // function handleSelectChange() {
+  //   const select = document.getElementById("dataSelect");
+  //   const selectedItem = select.value;
+  //   data.item_name = selectedItem;
+  //   console.log(data);
+  // }
+</script>
+<%- await include('parts/footer.ejs', locals) %>

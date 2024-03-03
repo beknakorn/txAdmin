@@ -64,6 +64,21 @@ const allRoutes: RouteType[] = [
         title: 'System Logs',
         children: <Iframe legacyUrl="systemLog" />
     },
+    {
+        path: '/player-logs',
+        title: 'Player Logs',
+        children: <Iframe legacyUrl="playerLog" />
+    },
+    {
+        path: '/vip',
+        title: 'Vip',
+        children: <Iframe legacyUrl="vip" />
+    },
+    {
+        path: '/cash',
+        title: 'Cash',
+        children: <Iframe legacyUrl="cash" />
+    },
     // {
     //     path: '/system/console-log',
     //     title: 'Console Log',

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "cd ../ && node scripts/main-builder.js publish",
-    "dev": "cd ../ && node scripts/main-builder.js dev",
+    "dev": "set TXADMIN_DEV_FXSERVER_PATH=D:\\Work\\server&&cd ../ && node scripts/main-builder.js dev",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint ./**",
     "lint:count": "eslint ./** -f ../scripts/lint-formatter.js",

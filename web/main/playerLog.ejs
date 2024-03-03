@@ -1,0 +1,290 @@
+<%- await include('parts/header.ejs', locals) %>
+<style>
+    .card-accent-info {
+      border-top: 2px solid #00bf8f !important;
+    }
+  </style>
+<link
+  rel="stylesheet"
+  href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css"
+/>
+
+<div class="text-center">
+  <h3>Player Log</h3>
+</div>
+<hr />
+<!-- 
+<div class="row justify-content-center">
+  <div class="card card-accent-info">
+    <div class="card-header float-left">
+      <div class="d-flex mb-2">
+        <div class="mr-2" style="width: 50%">
+          <div>เวลาเริ่ม:</div>
+          <div class="search-container">
+            <input
+              type="datetime-local"
+              id="meeting-time"
+              name="meeting-time"
+              value="2018-06-12T19:30"
+              min="2018-06-07T00:00"
+              max="2018-06-14T00:00"
+            />
+          </div>
+        </div>
+        <div style="width: 50%">
+          <div>เวลาเริ่ม:</div>
+          <div class="search-container">
+            <input
+              type="datetime-local"
+              id="meeting-time"
+              name="meeting-time"
+              value="2018-06-12T19:30"
+              min="2018-06-07T00:00"
+              max="2018-06-14T00:00"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between mb-2">
+        <div>
+            <div>Event :</div>
+          <div class="search-container mr-2">
+            <input
+              id="search-event"
+              type="text"
+              class="form-control"
+              placeholder="Event"
+            />
+          </div>
+        </div>
+        <div>
+          <div class="search-container">
+            <div>Regex :</div>
+            <input
+              id="search-event"
+              type="text"
+              class="form-control"
+              placeholder="Regex"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between">
+        <div>
+            <div class="search-container">
+              <input
+                id="search-event"
+                type="text"
+                class="form-control"
+                placeholder="Discord Id"
+              />
+            </div>
+          </div>
+        <button class="btn btn-primary" type="button" onclick="searchData()">
+          Search
+        </button>
+      </div>
+    </div>
+  </div> -->
+
+  
+  <div class="d-flex justify-content-center mb-4">
+    <div class="d-flex flex-column">
+      <div class="d-flex mb-1">
+        <div class="mr-2">
+          <span>เวลาเริ่ม: </span>
+          <span class="search-container">
+            <input
+              type="datetime-local"
+              id="start-time"
+              name="meeting-time"
+            />
+          </span>
+        </div>
+
+        <div>
+          <span>เวลาสิ้นสุด: </span>
+          <span class="search-container">
+            <input
+              type="datetime-local"
+              id="end-time"
+              name="meeting-time"
+            />
+          </span>
+        </div>
+      </div>
+
+      <div class="d-flex">
+        <div class="search-container">
+          <input
+            id="search-event"
+            type="text"
+            class="form-control"
+            placeholder="Event"
+          />
+        </div>
+        <div class="search-container mx-2">
+          <input
+            id="search-discordID"
+            type="text"
+            class="form-control"
+            placeholder="Discord Id"
+          />
+        </div>
+        <div class="search-regex">
+          <input
+            id="search-regex"
+            type="text"
+            class="form-control"
+            placeholder="Regex"
+          />
+        </div>
+        <button class="btn btn-primary ml-2" type="button" onclick="searchData()">
+          Search
+        </button>
+      </div>
+      <div class="d-flex"></div>
+    </div>
+  </div>
+
+  <table id="myTable" class="table table-striped" >
+    <thead>
+      <tr>
+        <th>Event</th>
+        <th>Content</th>
+        <th>ID</th>
+        <th>Player Name</th>
+        <th>Discord ID</th>
+        <th>Time Stamp</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+     timeInit()
+
+
+    let data = {
+      discord_id: "",
+      event: "",
+      begin: "2023-06-01T08:30",
+      until: "2023-08-01T08:30",
+      regex: "",
+    };
+  
+
+    function searchData() {
+
+        const startTime = document.getElementById("start-time").value;
+        const endTime = document.getElementById("end-time").value;
+        const event = document.getElementById("search-event").value;
+        const discordID = document.getElementById("search-discordID").value;
+        const regex = document.getElementById("search-regex").value;
+
+        data.event = event;
+        data.begin = startTime;
+        data.until = endTime;
+        data.discord_id = discordID;
+        data.regex = regex;
+
+        console.log(data)
+
+    const api = "https://mongkol.dev/api/fivemlog/custom";
+
+    const headers = {
+      // 'Host': 'https://mongkol.dev',
+      // 'Origin': 'https://tx.mongkol.dev',
+      "Access-Control-Allow-Origin": "https://tx.mongkol.dev",
+      // 'Access-Control-Request-Method' : 'GET',
+      // 'Access-Control-Request-Headers': 'Authorization',
+      // 'Referer': 'https://tx.mongkol.dev',
+      Authorization: "Basic dGhlY2lyY2xlZGV2OlRoZWNpcmNsZTExMiFAIw==",
+    };
+
+    axios
+      .post(api, data, {
+        headers: headers,
+      })
+      .then(function async(response) {
+  
+        const resData = response.data;
+        console.log(resData)
+      
+        const table = $("#myTable").DataTable();
+
+ 
+  table.clear().draw();
+  resData.forEach(function (data) {
+   
+    const formattedDateTime = convertDateTime(data.timestamp);
+
+    table.row.add([
+      data.event,
+      data.content,
+      data.source,
+      data.player.name,
+      data.player.identifiers.discord,
+      formattedDateTime,
+    ]);
+
+  table.draw();
+    });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
+
+    function convertDateTime(dateTime) {
+      const isoDateTime = new Date(dateTime);
+
+      const day = isoDateTime.getDate();
+      const month = isoDateTime.getMonth() + 1; 
+      const year = isoDateTime.getFullYear();
+
+      const hours = isoDateTime.getHours();
+      const minutes = isoDateTime.getMinutes();
+      const seconds = isoDateTime.getSeconds();
+
+      // เพิ่มเลข 0 นำหน้าถ้าเป็นเลขเดียว
+      const formattedDay = day < 10 ? `0${day}` : day;
+      const formattedMonth = month < 10 ? `0${month}` : month;
+      const formattedHours = hours < 10 ? `0${hours}` : hours;
+      const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+      const formattedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+
+      const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
+      const formattedTime = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+
+      const formattedDateTime = `${formattedDate}:${formattedTime}`;
+    
+      return formattedDateTime;
+   }
+
+
+
+    function timeInit () {
+
+      let startTimeInput = document.getElementById('start-time');
+      let endTimeInput = document.getElementById('end-time');
+
+        let now = new Date();
+        let year = now.getFullYear();
+        let month = ('0' + (now.getMonth() + 1)).slice(-2);
+        let day = ('0' + now.getDate()).slice(-2);
+        let hours = ('0' + now.getHours()).slice(-2);
+        let minutes = ('0' + now.getMinutes()).slice(-2);
+
+        startTimeInput.value = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes;
+        endTimeInput.value = year + '-' + month + '-' + day + 'T' + hours + ':' + minutes;
+      }
+
+  </script>
+
+  <%- await include('parts/footer.ejs', locals) %>
+
+  <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
+  <script></script>
+</div>

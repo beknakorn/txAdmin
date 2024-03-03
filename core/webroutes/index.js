@@ -6,6 +6,9 @@ export { default as liveConsole } from './liveConsole.js';
 export { default as resources } from './resources.js';
 export { default as chartData } from './chartData.js';
 export { default as systemLog } from './systemLog.js';
+export { default as playerLog } from './playerLog.js';
+export { default as vip } from './vip.js';
+export { default as cash } from './cash.js';
 export { default as databaseActions } from './databaseActions';
 
 export { default as auth_addMasterPin } from './authentication/addMasterPin.js';

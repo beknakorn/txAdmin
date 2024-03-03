@@ -3,6 +3,7 @@
 # exit when any command fails
 set -e
 
+set TXADMIN_DEV_FXSERVER_PATH=D:\\Work\\server
 # testing target folder
 if [ -z "$TXADMIN_DEV_FXSERVER_PATH" ]; then
   TARGET_PATH=$1

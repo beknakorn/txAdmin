@@ -1,4 +1,5 @@
 export default {
+    fxserverPath: 'D:\\Work\\server\\FXServer.exe',
     debouncerInterval: 250,
     preReleaseExpirationDays: 21,
 

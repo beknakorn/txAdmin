@@ -82,6 +82,9 @@ export default function DesktopHeader() {
                     <HeaderMenuLink href="/players">
                         Players
                     </HeaderMenuLink>
+                    <HeaderMenuLink href="/player-logs" >
+                        Player Log
+                    </HeaderMenuLink>
                     {/* <HeaderMenuLink href="/history" className='text-accent'>
                         History
                     </HeaderMenuLink> */}
@@ -94,6 +97,13 @@ export default function DesktopHeader() {
                     <HeaderMenuLink href="/settings" disabled={!hasPerm('settings.view')}>
                         Settings
                     </HeaderMenuLink>
+                    <HeaderMenuLink href="/cash" >
+                        Cash
+                    </HeaderMenuLink>
+                    <HeaderMenuLink href="/vip">
+                        Vip
+                    </HeaderMenuLink>
+             
                 </NavigationMenuList>
             </NavigationMenu>
 
